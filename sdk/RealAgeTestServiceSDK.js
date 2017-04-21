@@ -1,5 +1,5 @@
 'use strict';
-// import RealAgeAuthentication from './authentication/RealAgeAuthentication';
+import RealAgeAuthentication from './authentication/RealAgeAuthentication';
 import RequestExecutor from './clients/RequestExecutor';
 import RealAgeServiceClient from './clients/RealAgeServiceClient';
 
@@ -44,7 +44,7 @@ export default class RealAgeTestServiceSDK {
             _port.set(this, port);
             _host.set(this, host);
             _location.set(this, 'rat');
-            _baseUrl.set(this, `${this.protocol}://${this.host}${this.port ? ':' + this.port : ''}/${this.location}`);
+            _baseUrl.set(this, `${protocol}://${host}${port ? ':' + port : ''}/${_location.get(this)}`);
 
             instance = this;
         }
@@ -52,9 +52,18 @@ export default class RealAgeTestServiceSDK {
         return instance;
     }
 
-    // getAuthentication({ tokenType = 'anonymous', token = '', userId = '' }) {
-    //     return new RealAgeAuthentication({ tokenType, token, userId });
-    // }
+    getToken(realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
+        const hostUrl = 'https://auth.mservices.sharecare.com/access';
+        requestExecutor.executeRequest(
+            realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
+            onSuccess,
+            onError
+        );
+    }
+
+    getAuthentication({ tokenType = 'ANONYMOUS', token = '', userId = '' }) {
+        return new RealAgeAuthentication({ tokenType, token, userId });
+    }
 
     getUserDetails(realAgeAuthentication, userId, onSuccess, onError) {
         const hostUrl = _baseUrl.get(this);

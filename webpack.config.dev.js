@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+    target: 'node',
     entry: [
         './sdk/RealAgeTestServiceSDK.js'
     ],
@@ -9,7 +10,7 @@ module.exports = {
         path: path.join(__dirname, 'build'),
         filename: 'RealAgeTestServiceSDK.js',
         libraryTarget: 'umd',
-        library: ['com', 'package', 'Sharecare', 'RealAgeTestServiceSDK']
+        library: 'RealAgeTestServiceSDK'
     },
     module: {
         rules: [

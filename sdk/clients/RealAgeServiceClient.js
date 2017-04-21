@@ -1,6 +1,5 @@
 import RealAgeTestException from '../exceptions/RealAgeTestException';
 import RequestBuilder from '../clients/RequestBuilder';
-import request from 'request';
 
 export default class RealAgeServiceClient {
 
@@ -9,7 +8,6 @@ export default class RealAgeServiceClient {
     }
 
     sanitizeTokenTypeAndToken(realAgeAuthentication, userId) {
-
         if(!userId) {
             throw new RealAgeTestException("No user id found");
         } else if(!realAgeAuthentication) {
@@ -19,23 +17,31 @@ export default class RealAgeServiceClient {
         }
     }
 
-    createRequest(url, method, requestOptions) {
-        return new Promise((resolve, reject) => {
-            request[method.toLowerCase()](url, requestOptions, (err, response, body) => {
-                if (err) { reject(err); }
-                resolve(body);
-            });
-        });
+    getToken(hostUrl, realAgeAuthentication, credentials) {
+        let getDataPromise = null;
+        try {
+            this.sanitizeTokenTypeAndToken(realAgeAuthentication, credentials);
+            const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, credentials);
+            requestOptions.json = true;
+            requestOptions.qs = { grant_type: 'password' };
+            getDataPromise = this.requestBuilder.createRequest(hostUrl, 'POST', requestOptions);
+        } catch (ex) {
+            // TODO: figure out how to handle this
+            console.error(ex.stack);
+        }
+        return getDataPromise;
     }
 
     getUserDetails(hostUrl, realAgeAuthentication, userId) {
-        let req = null;
+        let getDataPromise = null;
         try {
             this.sanitizeTokenTypeAndToken(realAgeAuthentication, userId);
-            req = this.createRequest(`${hostUrl}/user/${userId}`, 'GET', this.requestBuilder.buildHttpEntity(realAgeAuthentication, userId));
+            const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, userId);
+            getDataPromise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}`, 'GET', requestOptions);
         } catch (ex) {
-            console.error(ex.message);
+            // TODO: figure out how to handle this
+            console.error(ex.stack);
         }
-        return req;
+        return getDataPromise;
     }
 };

@@ -19,13 +19,13 @@ export default class TokenType {
 
         switch(TokenTypes[tokenType]) {
             case 'ANONYMOUS':
-                return "RATM ";
+                return 'RATM';
             case 'BASIC':
-                return "Basic ";
+                return 'Basic';
             case 'SSO':
-                return "SSO ";
+                return 'SSO';
             default:
-                throw new RealAgeTestException("Unknown TokenType " + tokenType);
+                throw new RealAgeTestException('Unknown TokenType ' + tokenType);
         }
     }
 }
