@@ -1,5 +1,9 @@
 import RealAgeJsonException from '../exceptions/RealAgeJsonException';
 import RealAgeFactValidationException from '../exceptions/RealAgeFactValidationException';
+import ExceptionDirective from '../exceptions/ExceptionDirective';
+import ErrorDTO from '../dtos/ErrorDTO';
+import ResponseDTO from '../dtos/ResponseDTO';
+import Result from '../dtos/ResponseDTO';
 
 export default class RequestExecutor {
 
@@ -13,108 +17,89 @@ export default class RequestExecutor {
      * @returns {*}
      */
     executeRequest(callableRequest, onSuccess, onError) {
-        // let responseDTO = {};
+        let responseDTO = {};
+        callableRequest.then((response) => {
+            onSuccess(this.handleSuccessfulResponse(response));
+        }).catch((err) => {
+            console.log('Promise Error: ', err);
+            if (err instanceof RealAgeJsonException) {
+                responseDTO = this.handleFailedResponse({realAgeJsonException: err});
+            } else if (err instanceof RealAgeFactValidationException) {
+                responseDTO = this.handleFailedResponse({realAgeFactValidationException: err});
+            } else {
+                responseDTO = this.handleGenericFailedResponse(err);
+            }
+            onError(err);
+        });
+        return responseDTO;
+    }
 
+    executeRawRequest(callableRequest, onSuccess, onError) {
         try {
             callableRequest.then((response) => {
-
-                // responseDTO = this.handleSuccessfulResponse(response);
-
-
                 onSuccess(response);
             }).catch((err) => {
                 onError(err);
             });
-
-
-
-        } catch (err) {
-
-            console.log('Promise Error: ', err);
-            // if (err instanceof RealAgeJsonException) {
-            //     responseDTO = this.handleFailedResponse({realAgeJsonException: err});
-            // } else if (err instanceof RealAgeFactValidationException) {
-            //     responseDTO = this.handleFailedResponse({realAgeFactValidationException: err});
-            // } else {
-            //     responseDTO = this.handleGenericFailedResponse(err);
-            // }
+        } catch (ex) {
+            // TODO: figure out how to handle this
+            console.error(ex.stack);
         }
-        // return responseDTO;
     }
 
-    // executeRawRequest(callableRequest) {
-    //     try {
-    //         return callableRequest.call();
-    //     } catch (err) {
-    //         throw err.getCause();
-    //     }
-    // }
-    //
-    // executeNoResponseRequest(callableRequest) {
-    //     callableRequest.call();
-    // }
+    executeNoResponseRequest(callableRequest, onSuccess, onError) {
+        try {
+            callableRequest.then(() => {
+                onSuccess();
+            }).catch((err) => {
+                onError(err);
+            });
+        } catch (ex) {
+            // TODO: figure out how to handle this
+            console.error(ex.stack);
+        }
+    }
 
     handleSuccessfulResponse(response) {
-        // ResponseDTO<T> responseDTO = new ResponseDTO();
-        // responseDTO.setData(response);
-        // responseDTO.setResult(Result.SUCCESS);
-        // return responseDTO;
+        let responseDTO = new ResponseDTO();
+        responseDTO.setData(response);
+        responseDTO.setResult(Result.SUCCESS);
+        return responseDTO;
     }
 
-    // handleFailedResponse({realAgeJsonException, realAgeFactValidationException}) {
-    //     if (realAgeJsonException) {
-    //         // ResponseDTO<T> responseDTO = new ResponseDTO();
-    //         // responseDTO.setResult(Result.FAILURE);
-    //         // responseDTO.setErrors(new ArrayList<ErrorDTO>() {
-    //         //     {
-    //         //         this.addAll(RealAgeRequestExecutor.this.buildErrorDTO(exception));
-    //         //     }
-    //         // });
-    //     }
-    //
-    //     if (realAgeFactValidationException) {
-    //         // ResponseDTO<T> responseDTO = new ResponseDTO();
-    //         // responseDTO.setResult(Result.FAILURE);
-    //         // final ErrorDTO errorDTO = new ErrorDTO();
-    //         // errorDTO.setDirective(ExceptionDirective.LOG.name());
-    //         // errorDTO.setErrorCode(412);
-    //         // errorDTO.setErrorMessage(exception.getMessage());
-    //         // responseDTO.setErrors(new ArrayList<ErrorDTO>() {
-    //         //     {
-    //         //         this.add(errorDTO);
-    //         //     }
-    //         // });
-    //     }
-    //
-    //     return responseDTO;
-    // }
-    //
-    // handleGenericFailedResponse(exception) {
-    //     // ResponseDTO<T> responseDTO = new ResponseDTO();
-    //     // responseDTO.setResult(Result.FAILURE);
-    //     // final ErrorDTO errorDTO = new ErrorDTO();
-    //     // errorDTO.setDirective(ExceptionDirective.LOG.name());
-    //     // errorDTO.setErrorCode(500);
-    //     // errorDTO.setErrorMessage(exception.getMessage());
-    //     // responseDTO.setErrors(new ArrayList<ErrorDTO>() {
-    //     //     {
-    //     //         this.add(errorDTO);
-    //     //     }
-    //     // });
-    //     // return responseDTO;
-    // }
-    //
-    // buildErrorDTO(realAgeJsonException) {
-    //     // List<ErrorDTO> errorDTOs = new ArrayList();
-    //     // Iterator var3 = e.getErrors().iterator();
-    //     // while(var3.hasNext()) {
-    //     //     String errorMesage = (String)var3.next();
-    //     //     ErrorDTO errorDTO = new ErrorDTO();
-    //     //     errorDTO.setDirective(e.getExceptionDirective().name());
-    //     //     errorDTO.setErrorCode(e.getErrorCode().intValue());
-    //     //     errorDTO.setErrorMessage(errorMesage);
-    //     //     errorDTOs.add(errorDTO);
-    //     // }
-    //     // return errorDTOs;
-    // }
+    handleFailedResponse({realAgeJsonException, realAgeFactValidationException}) {
+        let responseDTO = new ResponseDTO();
+        responseDTO.setResult(Result.FAILURE);
+        if (realAgeJsonException) {
+            responseDTO.setErrors(this.buildErrorDTO(realAgeJsonException));
+        } else if (realAgeFactValidationException) {
+            let errorDTO = new ErrorDTO();
+            errorDTO.setDirective(ExceptionDirective.LOG);
+            errorDTO.setErrorCode(412);
+            errorDTO.setErrorMessage(realAgeFactValidationException.message);
+            responseDTO.setErrors(errorDTO);
+        }
+        return responseDTO;
+    }
+
+    handleGenericFailedResponse(exception) {
+        let responseDTO = new ResponseDTO();
+        responseDTO.setResult(Result.FAILURE);
+        let errorDTO = new ErrorDTO();
+        errorDTO.setDirective(ExceptionDirective.LOG);
+        errorDTO.setErrorCode(500);
+        errorDTO.setErrorMessage(exception.message);
+        responseDTO.setErrors(errorDTO);
+        return responseDTO;
+    }
+
+    buildErrorDTO(realAgeJsonException) {
+        return realAgeJsonException.getErrors().map((error) => {
+            let errorDTO = new ErrorDTO();
+            errorDTO.setDirective(realAgeJsonException.getExceptionDirective().name());
+            errorDTO.setErrorCode(realAgeJsonException.getErrorCode().intValue());
+            errorDTO.setErrorMessage(error.message);
+            return errorDTO;
+        });
+    }
 };
