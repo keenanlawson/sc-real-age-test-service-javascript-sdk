@@ -33,7 +33,7 @@ export default class ResponseDTO {
     }
 
     setResult(result) {
-        this.results = result;
+        this.result = result;
     }
 
     getErrors() {

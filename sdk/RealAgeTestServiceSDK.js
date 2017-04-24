@@ -52,7 +52,7 @@ export default class RealAgeTestServiceSDK {
         return instance;
     }
 
-    getToken(realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
+    static getToken(realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
         const hostUrl = 'https://auth.mservices.sharecare.com/access';
         requestExecutor.executeRequest(
             realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
@@ -61,8 +61,17 @@ export default class RealAgeTestServiceSDK {
         );
     }
 
-    getAuthentication({ tokenType = 'ANONYMOUS', token = '', userId = '' }) {
+    static getAuthentication({ tokenType = 'ANONYMOUS', token = '', userId = '' }) {
         return new RealAgeAuthentication({ tokenType, token, userId });
+    }
+
+    getAllAssessments(realAgeAuthentication, userId, onSuccess, onError) {
+        const hostUrl = _baseUrl.get(this);
+        requestExecutor.executeRequest(
+            realAgeServiceClient.getAllAssessments(hostUrl, realAgeAuthentication, userId),
+            onSuccess,
+            onError
+        );
     }
 
     getUserDetails(realAgeAuthentication, userId, onSuccess, onError) {
@@ -74,10 +83,10 @@ export default class RealAgeTestServiceSDK {
         );
     }
 
-    getAssessments(realAgeAuthentication, userId, onSuccess, onError) {
+    getUserAssessments(realAgeAuthentication, userId, onSuccess, onError) {
         const hostUrl = _baseUrl.get(this);
         requestExecutor.executeRequest(
-            realAgeServiceClient.getAssessments(hostUrl, realAgeAuthentication, userId),
+            realAgeServiceClient.getUserAssessments(hostUrl, realAgeAuthentication, userId),
             onSuccess,
             onError
         );
@@ -236,21 +245,21 @@ export default class RealAgeTestServiceSDK {
         );
     }
 
-    setFactForUser(hostUrl, realAgeAuthentication, userId, factDataDTO) {
-        const hostUrl = _baseUrl.get(this);
+    // setFactForUser(hostUrl, realAgeAuthentication, userId, factDataDTO) {
+    //     const hostUrl = _baseUrl.get(this);
     //     return this.setFactsForUser(hostUrl, realAgeAuthentication, userId, (Set)(new HashSet<FactDataDTO>() {
     //         {
     //             this.add(factDataDTO);
     //         }
     //     }));
-    }
+    // }
 
-    setFactForUser(hostUrl, realAgeAuthentication, userId, factId, factValue) {
-        const hostUrl = _baseUrl.get(this);
+    // setFactForUser(hostUrl, realAgeAuthentication, userId, factId, factValue) {
+    //     const hostUrl = _baseUrl.get(this);
     //     return this.setFactForUser(hostUrl, realAgeAuthentication, userId, this.factDataAssembler.assemble(factId, factValue));
-    }
+    // }
 
-    buildErrorDTO(realAgeJsonException) {
+    // buildErrorDTO(realAgeJsonException) {
     //     List<ErrorDTO> errorDTOs = new ArrayList();
     //     Iterator var3 = realAgeJsonException.getErrors().iterator();
     //
@@ -264,9 +273,9 @@ export default class RealAgeTestServiceSDK {
     //     }
     //
     //     return errorDTOs;
-    }
+    // }
 
-    handlePostPageFailedResponse(realAgeJsonException) {
+    // handlePostPageFailedResponse(realAgeJsonException) {
     //     ResponseDTO<GoToPageDTO> responseDTO = new ResponseDTO();
     //     responseDTO.setResult(Result.FAILURE);
     //     responseDTO.setErrors(new ArrayList<ErrorDTO>() {
@@ -275,9 +284,9 @@ export default class RealAgeTestServiceSDK {
     //         }
     //     });
     //     return responseDTO;
-    }
+    // }
 
-    handlePostPageFailedResponse(realAgeFactValidationException) {
+    // handlePostPageFailedResponse(realAgeFactValidationException) {
     //     ResponseDTO<GoToPageDTO> responseDTO = new ResponseDTO();
     //     responseDTO.setResult(Result.FAILURE);
     //     final ErrorDTO errorDTO = new ErrorDTO();
@@ -290,5 +299,5 @@ export default class RealAgeTestServiceSDK {
     //         }
     //     });
     //     return responseDTO;
-    }
+    // }
 };

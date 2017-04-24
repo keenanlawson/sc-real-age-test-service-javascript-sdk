@@ -32,6 +32,19 @@ export default class RealAgeServiceClient {
         return getDataPromise;
     }
 
+    getAllAssessments(hostUrl, realAgeAuthentication, userId) {
+        let promise = null;
+        try {
+            this.sanitizeTokenTypeAndToken(realAgeAuthentication, userId);
+            const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
+            promise = this.requestBuilder.createRequest(`${hostUrl}/assessments`, 'GET', requestOptions);
+        } catch (ex) {
+            // TODO: figure out how to handle this
+            console.error(ex.stack);
+        }
+        return promise;
+    }
+
     getUserDetails(hostUrl, realAgeAuthentication, userId) {
         let promise = null;
         try {
@@ -45,7 +58,7 @@ export default class RealAgeServiceClient {
         return promise;
     }
 
-    getAssessments(hostUrl, realAgeAuthentication, userId) {
+    getUserAssessments(hostUrl, realAgeAuthentication, userId) {
         let promise = null;
         try {
             this.sanitizeTokenTypeAndToken(realAgeAuthentication, userId);
