@@ -72,10 +72,77 @@ const getAllAssessments = (authentication) => {
     return authentication;
 };
 
+const getCalculation = (authentication) => {
+    _SDK.getCalculation(
+        authentication.auth,
+        authentication.userId,
+        745440,
+        (response) => {
+            console.log('Calculation Success: ', response);
+        },
+        (err) => {
+            console.log('Calculation Error: ', err);
+        }
+    );
+    return authentication;
+};
+
+const getRecommendations = (authentication) => {
+    _SDK.getRecommendations(
+        authentication.auth,
+        authentication.userId,
+        // 1461055,
+        745440,
+        (response) => {
+            console.log('Recommendations Success: ', response);
+        },
+        (err) => {
+            console.log('Recommendations Error: ', err);
+        }
+    );
+    return authentication;
+};
+
+const getAssessmentStatusForUser = (authentication) => {
+    _SDK.getAssessmentStatusForUser(
+        authentication.auth,
+        authentication.userId,
+        1461055,
+        // 745440,
+        (response) => {
+            console.log('Assessment Status Success: ', response);
+        },
+        (err) => {
+            console.log('Assessment Status Error: ', err);
+        }
+    );
+    return authentication;
+};
+
+const getFirstPage = (authentication) => {
+    _SDK.getFirstPage(
+        authentication.auth,
+        authentication.userId,
+        1461055,
+        // 745440,
+        (response) => {
+            console.log('First Page Success: ', response);
+        },
+        (err) => {
+            console.log('First Page Error: ', err);
+        }
+    );
+    return authentication;
+};
+
 new Promise(getAccessToken)
     .then(getRatAuthentication)
-    .then(getAllAssessments)
-    .then(getUserDetails)
+    // .then(getAllAssessments)
+    // .then(getUserDetails)
+    // .then(getCalculation)
+    // .then(getRecommendations)
+    // .then(getAssessmentStatusForUser)
+    .then(getFirstPage)
     .catch((e) => {
         console.log('App Error: ', e);
     });
