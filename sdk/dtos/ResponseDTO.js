@@ -25,7 +25,11 @@ export default class ResponseDTO {
     }
 
     setData(data) {
-        this.data = data;
+        if (typeof data === 'string') {
+            this.data = JSON.parse(data);
+        } else if (typeof data === 'object') {
+            this.data = data;
+        }
     }
 
     getResult() {

@@ -20,31 +20,35 @@ const realAgeServiceClient = new RealAgeServiceClient();
 let _protocol = new WeakMap();
 let _port = new WeakMap();
 let _host = new WeakMap();
-let _location = new WeakMap();
+let _pathname = new WeakMap();
 let _baseUrl = new WeakMap();
 
 /**
- * @returns {{getInstance: Function}}
- * @example new RealAgeTestServiceSDK(options);
+ * @class RealAgeTestServiceSDK
  */
 export default class RealAgeTestServiceSDK {
 
     /**
      *
      * @param protocol
-     * @param port
      * @param host
+     * @param port
+     * @param pathname
      * @returns {RealAgeTestServiceSDK}
      */
-    constructor({ protocol = 'https', port = '', host = 'micro.mservices.sharecare.com' } = {}) {
+    constructor({ protocol = 'https', host = '', port = '', pathname = '/rat' } = {}) {
+
+        if (!host) {
+            return null;
+        }
 
         if (!instance) {
 
             _protocol.set(this, protocol);
             _port.set(this, port);
             _host.set(this, host);
-            _location.set(this, 'rat');
-            _baseUrl.set(this, `${protocol}://${host}${port ? ':' + port : ''}/${_location.get(this)}`);
+            _pathname.set(this, pathname);
+            _baseUrl.set(this, `${protocol}://${host}${port ? ':' + port : ''}${pathname}`);
 
             instance = this;
         }
@@ -52,8 +56,7 @@ export default class RealAgeTestServiceSDK {
         return instance;
     }
 
-    static getToken(realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
-        const hostUrl = 'https://auth.mservices.sharecare.com/access';
+    static getToken(hostUrl, realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
         requestExecutor.executeRequest(
             realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
             onSuccess,

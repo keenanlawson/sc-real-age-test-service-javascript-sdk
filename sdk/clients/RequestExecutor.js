@@ -3,7 +3,7 @@ import RealAgeFactValidationException from '../exceptions/RealAgeFactValidationE
 import ExceptionDirective from '../exceptions/ExceptionDirective';
 import ErrorDTO from '../dtos/ErrorDTO';
 import ResponseDTO from '../dtos/ResponseDTO';
-import Result from '../dtos/ResponseDTO';
+import {Result} from '../dtos/ResponseDTO';
 
 export default class RequestExecutor {
 

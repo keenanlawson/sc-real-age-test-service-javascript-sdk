@@ -22,6 +22,7 @@ const onAccessTokenError = (err, resolve, reject) => {
 
 const getAccessToken = (resolve, reject) => {
     RealAgeTestServiceSDK.getToken(
+        'https://auth.mservices.sharecare.com/access',
         _TOKEN_AUTH,
         _TOKEN_BODY,
         (response) => {
@@ -142,7 +143,7 @@ new Promise(getAccessToken)
     // .then(getCalculation)
     // .then(getRecommendations)
     // .then(getAssessmentStatusForUser)
-    .then(getFirstPage)
+    // .then(getFirstPage)
     .catch((e) => {
         console.log('App Error: ', e);
     });
