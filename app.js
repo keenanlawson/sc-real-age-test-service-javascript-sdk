@@ -1,6 +1,11 @@
 const RealAgeTestServiceSDK = require('./build/RealAgeTestServiceSDK').default;
 
-const _SDK = new RealAgeTestServiceSDK();
+const _SDK = new RealAgeTestServiceSDK({
+    protocol: 'https',
+    host: 'micro.mservices.sharecare.com',
+    port: '',
+    pathname: '/rat'
+});
 const _TOKEN_AUTH = RealAgeTestServiceSDK.getAuthentication({
     tokenType: 'BASIC',
     token: 'c2hhcmVjYXJlOmhzd2k='
@@ -136,6 +141,30 @@ const getFirstPage = (authentication) => {
     return authentication;
 };
 
+const savePage = (authentication) => {
+    _SDK.postPage(
+        authentication.auth,
+        authentication.userId,
+        1461055,
+        "1",
+        "1",
+        {
+            "1463169": [
+                {
+                    "20090": "average"
+                }
+            ]
+        },
+        (response) => {
+            console.log('Save Page Success: ', response);
+        },
+        (err) => {
+            console.log('Save Page Error: ', err);
+        }
+    );
+    return authentication;
+};
+
 new Promise(getAccessToken)
     .then(getRatAuthentication)
     // .then(getAllAssessments)
@@ -144,6 +173,7 @@ new Promise(getAccessToken)
     // .then(getRecommendations)
     // .then(getAssessmentStatusForUser)
     // .then(getFirstPage)
+    // .then(savePage)
     .catch((e) => {
         console.log('App Error: ', e);
     });

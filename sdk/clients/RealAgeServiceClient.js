@@ -115,6 +115,7 @@ export default class RealAgeServiceClient {
         try {
             this.sanitizeTokenTypeAndToken(realAgeAuthentication, userId);
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, questionGroupAnswersDTO);
+            requestOptions.json = true;
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/${moduleId}/${questionGroupId}`, 'POST', requestOptions);
         } catch (ex) {
             // TODO: figure out how to handle this

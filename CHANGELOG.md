@@ -21,3 +21,9 @@ Added main and HTTP methods.  Updated request executor to return response DTOs. 
 4/27/2017
 
 Updated ResponseDTO to have correct result type.  Also JSON parsed the RAT service data string to return an object instead of a string representation of an object.  Updated constructor to take URL components.  Updated `getToken` method to require full URL.
+
+-----
+
+5/1/2017
+
+Worked out `postPage` method and post failure methods.

@@ -25,18 +25,17 @@ export default class RequestBuilder {
         return httpEntity;
     }
 
-    createRequest(url, method = 'GET', requestOptions) {
-        // TODO: rename and clean up
-        const xxx = {url: url, method: method, headers: requestOptions.headers};
-        if (requestOptions.body) {
-            xxx.body = requestOptions.body;
+    createRequest(url, method = 'GET', options) {
+        const requestOptions = {url: url, method: method, headers: options.headers};
+        if (options.body) {
+            requestOptions.body = options.body;
         }
-        if (requestOptions.json) {
-            xxx.json = requestOptions.json;
+        if (options.json) {
+            requestOptions.json = options.json;
         }
-        console.log(xxx);
+        console.log(requestOptions);
         return new Promise((resolve, reject) => {
-            request(xxx, (err, response, body) => {
+            request(requestOptions, (err, response, body) => {
                 if (err) { reject(err); }
                 resolve(body);
             });
