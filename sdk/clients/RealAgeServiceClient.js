@@ -26,7 +26,6 @@ export default class RealAgeServiceClient {
             requestOptions.qs = { grant_type: 'password' };
             getDataPromise = this.requestBuilder.createRequest(hostUrl, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return getDataPromise;
@@ -39,7 +38,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/assessments`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -52,7 +50,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, userId);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -65,7 +62,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, userId);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -78,7 +74,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/status`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -91,7 +86,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -104,7 +98,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/${moduleId}/${questionGroupId}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -118,7 +111,6 @@ export default class RealAgeServiceClient {
             requestOptions.json = true;
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/${moduleId}/${questionGroupId}`, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -131,7 +123,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/rec`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -144,7 +135,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/calc`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -157,7 +147,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, microPaymentDTOs);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/micropayments`, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -170,7 +159,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, maximizedFactDataDTOs);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/assessments/${assessmentId}/whatif`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -182,7 +170,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity();
             promise = this.requestBuilder.createRequest(`${hostUrl}/sessions`, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -195,7 +182,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${realAgeAuthentication.getUserId()}/dvg?id=/${optAssessmentId}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -208,7 +194,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/facts`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -221,7 +206,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/facts?id=${factId}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -234,7 +218,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/facts?id=${factIdSet.join(',')}`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -247,7 +230,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, factDataDTOSet);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/facts`, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -260,7 +242,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/${userId}/realage-result`, 'GET', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -273,7 +254,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/subscription?email=${email}`, 'POST', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;
@@ -286,7 +266,6 @@ export default class RealAgeServiceClient {
             const requestOptions = this.requestBuilder.buildHttpEntity(realAgeAuthentication, null);
             promise = this.requestBuilder.createRequest(`${hostUrl}/user/subscription?email=${email}`, 'DELETE', requestOptions);
         } catch (ex) {
-            // TODO: figure out how to handle this
             console.error(ex.stack);
         }
         return promise;

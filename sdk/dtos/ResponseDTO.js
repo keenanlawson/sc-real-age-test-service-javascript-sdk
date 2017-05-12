@@ -30,6 +30,7 @@ export default class ResponseDTO {
         } else if (typeof data === 'object') {
             this.data = data;
         }
+        return this;
     }
 
     getResult() {
@@ -38,6 +39,7 @@ export default class ResponseDTO {
 
     setResult(result) {
         this.result = result;
+        return this;
     }
 
     getErrors() {
@@ -46,6 +48,7 @@ export default class ResponseDTO {
 
     setErrors(errors = []) {
         this.errors = this.errors.concat(errors);
+        return this;
     }
 
     equals(o) {

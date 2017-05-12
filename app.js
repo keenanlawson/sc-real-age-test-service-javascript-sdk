@@ -6,48 +6,71 @@ const _SDK = new RealAgeTestServiceSDK({
     port: '',
     pathname: '/rat'
 });
-const _TOKEN_AUTH = RealAgeTestServiceSDK.getAuthentication({
-    tokenType: 'BASIC',
-    token: 'c2hhcmVjYXJlOmhzd2k='
-});
-const _TOKEN_BODY = {username: 'klawson@sharecare.com', password: 'sharecare'};
 
-const onAccessTokenReceived = (response, resolve, reject) => {
-    console.log('Token Success: ', response);
-    if (response.data && response.data.access_token && response.data.account_id) {
-        resolve(response.data);
-    } else {
-        reject(new Error('Bad Token or UserID'));
-    }
-};
-const onAccessTokenError = (err, resolve, reject) => {
-    console.log('Token Error: ', err);
-    reject(err);
+// const _TOKEN_AUTH = RealAgeTestServiceSDK.getAuthentication({
+//     tokenType: 'BASIC',
+//     token: 'c2hhcmVjYXJlOmhzd2k='
+// });
+// const _TOKEN_BODY = {username: 'klawson@sharecare.com', password: 'sharecare'};
+
+const getTestAuth = () => {
+    return new Promise((resolve, reject) => {
+        RealAgeTestServiceSDK.getAuthentication({tokenType: 'BASIC', token: 'c2hhcmVjYXJlOmhzd2k='})
+            .then((response) => {
+                console.log('getAuthentication SUCCESS: ', response);
+                resolve({auth: response.data, body: {username: 'klawson@sharecare.com', password: 'sharecare'}})
+            })
+            .catch((err) => {
+                console.log('getAuthentication ERROR: ', err);
+                reject(err);
+            });
+    });
 };
 
-const getAccessToken = (resolve, reject) => {
-    RealAgeTestServiceSDK.getToken(
-        'https://auth.mservices.sharecare.com/access',
-        _TOKEN_AUTH,
-        _TOKEN_BODY,
-        (response) => {
-            onAccessTokenReceived(response, resolve, reject);
-        },
-        (err) => {
-            onAccessTokenError(err, resolve, reject);
-        }
-    );
+const getAccessToken = (authResponse) => {
+    return new Promise((resolve, reject) => {
+        RealAgeTestServiceSDK.getToken('https://auth.mservices.sharecare.com/access', authResponse.auth, authResponse.body)
+            .then((response) => {
+                console.log('getToken SUCCESS: ', response);
+                resolve(response.data);
+            })
+            .catch((err) => {
+                console.log('getToken ERROR: ', err);
+                reject(err);
+            });
+    });
 };
+
+const logToken = (response) => {
+    return new Promise((resolve, reject) => {
+        console.log('TEST SUCCESS: ', response);
+        resolve(response);
+    });
+};
+
+const logError = (err) => {
+    console.log('TEST ERROR: ', err);
+};
+
+getTestAuth()
+    .then(getAccessToken)
+    .then(logToken)
+    .catch(logError);
 
 const getRatAuthentication = (token) => {
-    return {
-        userId: token.account_id,
-        auth: RealAgeTestServiceSDK.getAuthentication({
-            tokenType: 'SSO',
-            token: token.access_token,
-            userId: token.account_id
-        })
-    };
+    return new Promise((resolve, reject) => {
+        if (!token || !token.access_token || !token.account_id) {
+            reject(new Error('Invalid token or token parameters: ' + token.toString()));
+        }
+        resolve({
+            userId: token.account_id,
+            auth: RealAgeTestServiceSDK.getAuthentication({
+                tokenType: 'SSO',
+                token: token.access_token,
+                userId: token.account_id
+            })
+        });
+    });
 };
 
 const getUserDetails = (authentication) => {
@@ -110,19 +133,17 @@ const getRecommendations = (authentication) => {
 };
 
 const getAssessmentStatusForUser = (authentication) => {
-    _SDK.getAssessmentStatusForUser(
-        authentication.auth,
-        authentication.userId,
-        1461055,
-        // 745440,
-        (response) => {
-            console.log('Assessment Status Success: ', response);
-        },
-        (err) => {
-            console.log('Assessment Status Error: ', err);
-        }
-    );
-    return authentication;
+    return new Promise((resolve, reject) => {
+        _SDK.getAssessmentStatusForUser(authentication.auth, authentication.userId, 1461055)
+            .then((response) => {
+                console.log('Assessment Status Success: ', response);
+                resolve(response);
+            })
+            .catch((err) => {
+                console.log('Assessment Status Error: ', err);
+                reject(err);
+            });
+    });
 };
 
 const getFirstPage = (authentication) => {
@@ -165,15 +186,39 @@ const savePage = (authentication) => {
     return authentication;
 };
 
-new Promise(getAccessToken)
-    .then(getRatAuthentication)
-    // .then(getAllAssessments)
-    // .then(getUserDetails)
-    // .then(getCalculation)
-    // .then(getRecommendations)
-    // .then(getAssessmentStatusForUser)
-    // .then(getFirstPage)
-    // .then(savePage)
-    .catch((e) => {
-        console.log('App Error: ', e);
-    });
+// const getToken = RealAgeTestServiceSDK.getToken('https://auth.mservices.sharecare.com/access', _TOKEN_AUTH, _TOKEN_BODY);
+// console.log(getToken);
+    // .then((response) => { console.log(response); })
+    // .catch((err) => { console.log(err); });
+
+// new Promise(getAccessToken)
+//     .then(getRatAuthentication)
+//     // .then(getAllAssessments)
+//     // .then(getUserDetails)
+//     // .then(getCalculation)
+//     // .then(getRecommendations)
+//     .then(getAssessmentStatusForUser)
+//     // .then(getFirstPage)
+//     // .then(savePage)
+//     .then((response) => {
+//         console.log('XXX', response);
+//     })
+//     .catch((e) => {
+//         console.log('App Error: ', e);
+//     });
+
+// new Promise(getAccessToken)
+//     .then(getRatAuthentication)
+//     // .then(getAllAssessments)
+//     // .then(getUserDetails)
+//     // .then(getCalculation)
+//     // .then(getRecommendations)
+//     .then(getAssessmentStatusForUser)
+//     // .then(getFirstPage)
+//     // .then(savePage)
+//     .then((response) => {
+//         console.log('XXX', response);
+//     })
+//     .catch((e) => {
+//         console.log('App Error: ', e);
+//     });

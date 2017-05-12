@@ -11,16 +11,16 @@ export default class RequestExecutor {
 
     /**
      *
-     * @param {Promise} callableRequest
-     * @param {Function} onSuccess
-     * @param {Function} onError
+     * @param {Promise} promise
+     * @param {Function} resolve
+     * @param {Function} reject
      * @returns {*}
      */
-    executeRequest(callableRequest, onSuccess, onError) {
+    executeRequest(promise, resolve, reject) {
         let responseDTO = {};
         try {
-            callableRequest.then((response) => {
-                onSuccess(this.handleSuccessfulResponse(response));
+            promise.then((response) => {
+                resolve(this.handleSuccessfulResponse(response));
             }).catch((err) => {
                 if (err instanceof RealAgeJsonException) {
                     responseDTO = this.handleFailedResponse({realAgeJsonException: err});
@@ -29,19 +29,19 @@ export default class RequestExecutor {
                 } else {
                     responseDTO = this.handleGenericFailedResponse(err);
                 }
-                onError(err);
+                reject(responseDTO);
             });
         } catch (err) {
-            onError(err);
+            responseDTO = this.handleGenericFailedResponse(err);
+            reject(responseDTO);
         }
-        return responseDTO;
     }
 
-    executeRawRequest(callableRequest, onSuccess, onError) {
+    executeRawRequest(promise, resolve, reject) {
         let responseDTO = {};
         try {
-            callableRequest.then((response) => {
-                onSuccess(response);
+            promise.then((response) => {
+                resolve(response);
             }).catch((err) => {
                 if (err instanceof RealAgeJsonException) {
                     responseDTO = this.handlePostPageFailedResponse({realAgeJsonException: err});
@@ -50,80 +50,73 @@ export default class RequestExecutor {
                 } else {
                     responseDTO = this.handleGenericFailedResponse(err);
                 }
-                onError(err);
+                reject(responseDTO);
             });
         } catch (err) {
-            onError(err);
+            responseDTO = this.handleGenericFailedResponse(err);
+            reject(responseDTO);
         }
-        return responseDTO;
     }
 
-    executeNoResponseRequest(callableRequest, onSuccess, onError) {
+    executeNoResponseRequest(promise, resolve, reject) {
         try {
-            callableRequest.then(() => {
-                onSuccess();
+            promise.then((response) => {
+                resolve(this.handleSuccessfulResponse(response));
             }).catch((err) => {
-                onError(err);
+                reject(this.handleGenericFailedResponse(err));
             });
         } catch (err) {
-            onError(err);
+            reject(this.handleGenericFailedResponse(err));
         }
     }
 
     handleSuccessfulResponse(response) {
-        let responseDTO = new ResponseDTO();
-        responseDTO.setData(response);
-        responseDTO.setResult(Result.SUCCESS);
-        return responseDTO;
+        return new ResponseDTO()
+            .setData(response)
+            .setResult(Result.SUCCESS);
     }
 
     handleFailedResponse({realAgeJsonException, realAgeFactValidationException}) {
-        let responseDTO = new ResponseDTO();
-        responseDTO.setResult(Result.FAILURE);
+        let responseDTO = new ResponseDTO().setResult(Result.FAILURE);
         if (realAgeJsonException) {
             responseDTO.setErrors(this.buildErrorDTO(realAgeJsonException));
         } else if (realAgeFactValidationException) {
-            let errorDTO = new ErrorDTO();
-            errorDTO.setDirective(ExceptionDirective.LOG);
-            errorDTO.setErrorCode(412);
-            errorDTO.setErrorMessage(realAgeFactValidationException.message);
-            responseDTO.setErrors(errorDTO);
+            responseDTO.setErrors(new ErrorDTO()
+                .setDirective(ExceptionDirective.LOG)
+                .setErrorCode(412)
+                .setErrorMessage(realAgeFactValidationException.message));
         }
         return responseDTO;
     }
 
     handleGenericFailedResponse(exception) {
-        let responseDTO = new ResponseDTO();
-        responseDTO.setResult(Result.FAILURE);
-        let errorDTO = new ErrorDTO();
-        errorDTO.setDirective(ExceptionDirective.LOG);
-        errorDTO.setErrorCode(500);
-        errorDTO.setErrorMessage(exception.message);
-        responseDTO.setErrors(errorDTO);
-        return responseDTO;
+        return new ResponseDTO()
+            .setResult(Result.FAILURE)
+            .setErrors(new ErrorDTO()
+                .setDirective(ExceptionDirective.LOG)
+                .setErrorCode(500)
+                .setErrorMessage(exception.message)
+            );
     }
 
     buildErrorDTO(realAgeJsonException) {
         return realAgeJsonException.getErrors().map((error) => {
-            let errorDTO = new ErrorDTO();
-            errorDTO.setDirective(realAgeJsonException.getExceptionDirective().name());
-            errorDTO.setErrorCode(realAgeJsonException.getErrorCode().intValue());
-            errorDTO.setErrorMessage(error.message);
-            return errorDTO;
+            return new ErrorDTO()
+                .setDirective(realAgeJsonException.getExceptionDirective().name())
+                .setErrorCode(realAgeJsonException.getErrorCode().intValue())
+                .setErrorMessage(error.message);
         });
     }
 
     handlePostPageFailedResponse({realAgeJsonException, realAgeFactValidationException}) {
-        let responseDTO = new ResponseDTO();
-        responseDTO.setResult(Result.FAILURE);
+        let responseDTO = new ResponseDTO().setResult(Result.FAILURE);
         if (realAgeJsonException) {
             responseDTO.setErrors(this.buildErrorDTO(realAgeJsonException));
         } else if (realAgeFactValidationException) {
-            let errorDTO = new ErrorDTO();
-            errorDTO.setDirective(ExceptionDirective.LOG);
-            errorDTO.setErrorCode(412);
-            errorDTO.setErrorMessage(realAgeFactValidationException.message);
-            responseDTO.setErrors(errorDTO);
+            responseDTO.setErrors(new ErrorDTO()
+                .setDirective(ExceptionDirective.LOG)
+                .setErrorCode(412)
+                .setErrorMessage(realAgeFactValidationException.message));
         }
         return responseDTO;
     }

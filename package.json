@@ -1,6 +1,12 @@
 {
   "name": "sc-real-age-test-service-javascript-sdk",
   "version": "0.0.1",
+  "description": "Sharecare Real Age Test Service JavaScript SDK",
+  "main": "./sdk/RealAgeTestServiceSDK.js",
+  "scripts": {
+    "build-static": "gulp",
+    "start": "node app.js"
+  },
   "dependencies": {
     "request": "^2.81.0"
   },

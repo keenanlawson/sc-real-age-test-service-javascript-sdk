@@ -56,251 +56,251 @@ export default class RealAgeTestServiceSDK {
         return instance;
     }
 
-    static getToken(hostUrl, realAgeAuthentication, { username = '', password = ''}, onSuccess, onError) {
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
-            onSuccess,
-            onError
-        );
+    static getToken(hostUrl, realAgeAuthentication, { username = '', password = ''}) {
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
+                resolve,
+                reject
+            );
+        });
     }
 
     static getAuthentication({ tokenType = 'ANONYMOUS', token = '', userId = '' }) {
-        return new RealAgeAuthentication({ tokenType, token, userId });
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                new Promise((resolve2, reject2) => {
+                    if (!tokenType) {
+                        reject2(new Error('Invalid tokenType: ' + tokenType));
+                    } else if (!token) {
+                        reject2(new Error('Invalid token: ' + token));
+                    } else {
+                        resolve2(new RealAgeAuthentication({ tokenType, token, userId }));
+                    }
+                }),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getAllAssessments(realAgeAuthentication, userId, onSuccess, onError) {
+    getAllAssessments(realAgeAuthentication, userId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getAllAssessments(hostUrl, realAgeAuthentication, userId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getAllAssessments(hostUrl, realAgeAuthentication, userId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getUserDetails(realAgeAuthentication, userId, onSuccess, onError) {
+    getUserDetails(realAgeAuthentication, userId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getUserDetails(hostUrl, realAgeAuthentication, userId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getUserDetails(hostUrl, realAgeAuthentication, userId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getUserAssessments(realAgeAuthentication, userId, onSuccess, onError) {
+    getUserAssessments(realAgeAuthentication, userId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getUserAssessments(hostUrl, realAgeAuthentication, userId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getUserAssessments(hostUrl, realAgeAuthentication, userId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getAssessmentStatusForUser(realAgeAuthentication, userId, assessmentId, onSuccess, onError) {
+    getAssessmentStatusForUser(realAgeAuthentication, userId, assessmentId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getAssessmentStatusForUser(hostUrl, realAgeAuthentication, userId, assessmentId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getAssessmentStatusForUser(hostUrl, realAgeAuthentication, userId, assessmentId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getFirstPage(realAgeAuthentication, userId, assessmentId, onSuccess, onError) {
+    getFirstPage(realAgeAuthentication, userId, assessmentId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getFirstPage(hostUrl, realAgeAuthentication, userId, assessmentId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getFirstPage(hostUrl, realAgeAuthentication, userId, assessmentId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getPage(realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, onSuccess, onError) {
+    getPage(realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    postPage(realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO, onSuccess, onError) {
+    postPage(realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.postPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.postPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getRecommendations(realAgeAuthentication, userId, assessmentId, onSuccess, onError) {
+    getRecommendations(realAgeAuthentication, userId, assessmentId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getRecommendations(hostUrl, realAgeAuthentication, userId, assessmentId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getRecommendations(hostUrl, realAgeAuthentication, userId, assessmentId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getCalculation(realAgeAuthentication, userId, assessmentId, onSuccess, onError) {
+    getCalculation(realAgeAuthentication, userId, assessmentId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getCalculation(hostUrl, realAgeAuthentication, userId, assessmentId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getCalculation(hostUrl, realAgeAuthentication, userId, assessmentId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getMicroBenefits(realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist, onSuccess, onError) {
+    getMicroBenefits(realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getMicroBenefits(hostUrl, realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getMicroBenefits(hostUrl, realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getPotentialBenefitForUser(realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs, onSuccess, onError) {
+    getPotentialBenefitForUser(realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.getPotentialBenefitForUser(hostUrl, realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.getPotentialBenefitForUser(hostUrl, realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs),
+                resolve,
+                reject
+            );
+        });
     }
 
-    requestSessionProfile(onSuccess, onError) {
+    requestSessionProfile() {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRequest(
-            realAgeServiceClient.requestSessionProfile(hostUrl),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRequest(
+                realAgeServiceClient.requestSessionProfile(hostUrl),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getRecommendedDVGContent(realAgeAuthentication, optAssessmentId = null, onSuccess, onError) {
+    getRecommendedDVGContent(realAgeAuthentication, optAssessmentId = null) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.getRecommendedDVGContent(hostUrl, realAgeAuthentication, optAssessmentId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.getRecommendedDVGContent(hostUrl, realAgeAuthentication, optAssessmentId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getAllFactsForUser(realAgeAuthentication, userId, onSuccess, onError) {
+    getAllFactsForUser(realAgeAuthentication, userId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.getAllFactsForUser(hostUrl, realAgeAuthentication, userId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.getAllFactsForUser(hostUrl, realAgeAuthentication, userId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getFactForUser(realAgeAuthentication, userId, factId, onSuccess, onError) {
+    getFactForUser(realAgeAuthentication, userId, factId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.getFactForUser(hostUrl, realAgeAuthentication, userId, factId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.getFactForUser(hostUrl, realAgeAuthentication, userId, factId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getFactsForUser(realAgeAuthentication, userId, factIdSet, onSuccess, onError) {
+    getFactsForUser(realAgeAuthentication, userId, factIdSet) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.getFactsForUser(hostUrl, realAgeAuthentication, userId, factIdSet),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.getFactsForUser(hostUrl, realAgeAuthentication, userId, factIdSet),
+                resolve,
+                reject
+            );
+        });
     }
 
-    setFactsForUser(realAgeAuthentication, userId, factDataDTOSet, onSuccess, onError) {
+    setFactsForUser(realAgeAuthentication, userId, factDataDTOSet) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.setFactsForUser(hostUrl, realAgeAuthentication, userId, factDataDTOSet),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.setFactsForUser(hostUrl, realAgeAuthentication, userId, factDataDTOSet),
+                resolve,
+                reject
+            );
+        });
     }
 
-    getRealAgeStatusResult(realAgeAuthentication, userId, onSuccess, onError) {
+    getRealAgeStatusResult(realAgeAuthentication, userId) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeRawRequest(
-            realAgeServiceClient.getRealAgeStatusResult(hostUrl, realAgeAuthentication, userId),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeRawRequest(
+                realAgeServiceClient.getRealAgeStatusResult(hostUrl, realAgeAuthentication, userId),
+                resolve,
+                reject
+            );
+        });
     }
 
-    subscribeToEmailMarketing(realAgeAuthentication, email, onSuccess, onError) {
+    subscribeToEmailMarketing(realAgeAuthentication, email) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeNoResponseRequest(
-            realAgeServiceClient.subscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeNoResponseRequest(
+                realAgeServiceClient.subscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
+                resolve,
+                reject
+            );
+        });
     }
 
-    unsubscribeToEmailMarketing(realAgeAuthentication, email, onSuccess, onError) {
+    unsubscribeToEmailMarketing(realAgeAuthentication, email) {
         const hostUrl = _baseUrl.get(this);
-        requestExecutor.executeNoResponseRequest(
-            realAgeServiceClient.unsubscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
-            onSuccess,
-            onError
-        );
+        return new Promise((resolve, reject) => {
+            requestExecutor.executeNoResponseRequest(
+                realAgeServiceClient.unsubscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
+                resolve,
+                reject
+            );
+        });
     }
-
-    // setFactForUser(hostUrl, realAgeAuthentication, userId, factDataDTO) {
-    //     const hostUrl = _baseUrl.get(this);
-    //     return this.setFactsForUser(hostUrl, realAgeAuthentication, userId, (Set)(new HashSet<FactDataDTO>() {
-    //         {
-    //             this.add(factDataDTO);
-    //         }
-    //     }));
-    // }
-
-    // setFactForUser(hostUrl, realAgeAuthentication, userId, factId, factValue) {
-    //     const hostUrl = _baseUrl.get(this);
-    //     return this.setFactForUser(hostUrl, realAgeAuthentication, userId, this.factDataAssembler.assemble(factId, factValue));
-    // }
-
-    // buildErrorDTO(realAgeJsonException) {
-    //     List<ErrorDTO> errorDTOs = new ArrayList();
-    //     Iterator var3 = realAgeJsonException.getErrors().iterator();
-    //
-    //     while(var3.hasNext()) {
-    //         String errorMessage = (String)var3.next();
-    //         ErrorDTO errorDTO = new ErrorDTO();
-    //         errorDTO.setDirective(realAgeJsonException.getExceptionDirective().name());
-    //         errorDTO.setErrorCode(realAgeJsonException.getErrorCode().intValue());
-    //         errorDTO.setErrorMessage(errorMessage);
-    //         errorDTOs.add(errorDTO);
-    //     }
-    //
-    //     return errorDTOs;
-    // }
-
-    // handlePostPageFailedResponse(realAgeJsonException) {
-    //     ResponseDTO<GoToPageDTO> responseDTO = new ResponseDTO();
-    //     responseDTO.setResult(Result.FAILURE);
-    //     responseDTO.setErrors(new ArrayList<ErrorDTO>() {
-    //         {
-    //             this.addAll(RealAgeServiceClientImpl.this.buildErrorDTO(realAgeJsonException));
-    //         }
-    //     });
-    //     return responseDTO;
-    // }
-
-    // handlePostPageFailedResponse(realAgeFactValidationException) {
-    //     ResponseDTO<GoToPageDTO> responseDTO = new ResponseDTO();
-    //     responseDTO.setResult(Result.FAILURE);
-    //     final ErrorDTO errorDTO = new ErrorDTO();
-    //     errorDTO.setDirective(ExceptionDirective.LOG.name());
-    //     errorDTO.setErrorCode(412);
-    //     errorDTO.setErrorMessage(realAgeFactValidationException.getMessage());
-    //     responseDTO.setErrors(new ArrayList<ErrorDTO>() {
-    //         {
-    //             this.add(errorDTO);
-    //         }
-    //     });
-    //     return responseDTO;
-    // }
 };

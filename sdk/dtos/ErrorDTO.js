@@ -13,6 +13,7 @@ export default class ErrorDTO {
 
     setErrorCode(errorCode) {
         this.errorCode = errorCode;
+        return this;
     }
 
     getErrorMessage() {
@@ -21,6 +22,7 @@ export default class ErrorDTO {
 
     setErrorMessage(errorMessage) {
         this.errorMessage = errorMessage;
+        return this;
     }
 
     getId() {
@@ -29,6 +31,7 @@ export default class ErrorDTO {
 
     setId(id) {
         this.id = id;
+        return this;
     }
 
     getDirective() {
@@ -37,6 +40,7 @@ export default class ErrorDTO {
 
     setDirective(directive) {
         this.directive = directive;
+        return this;
     }
 
     equals(o) {

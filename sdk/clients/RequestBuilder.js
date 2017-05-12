@@ -33,11 +33,10 @@ export default class RequestBuilder {
         if (options.json) {
             requestOptions.json = options.json;
         }
-        console.log(requestOptions);
         return new Promise((resolve, reject) => {
             request(requestOptions, (err, response, body) => {
                 if (err) { reject(err); }
-                resolve(body);
+                else { resolve(body); }
             });
         });
     }
