@@ -41,7 +41,7 @@ export default class RequestExecutor {
         let responseDTO = {};
         try {
             promise.then((response) => {
-                resolve(response);
+                resolve(this.handleSuccessfulResponse(response));
             }).catch((err) => {
                 if (err instanceof RealAgeJsonException) {
                     responseDTO = this.handlePostPageFailedResponse({realAgeJsonException: err});
@@ -71,9 +71,13 @@ export default class RequestExecutor {
     }
 
     handleSuccessfulResponse(response) {
-        return new ResponseDTO()
-            .setData(response)
-            .setResult(Result.SUCCESS);
+        if (response.hasOwnProperty('data') && response.hasOwnProperty('result')) {
+            return new ResponseDTO(Object.assign(response, {errors: []}));
+        } else {
+            return new ResponseDTO()
+                .setData(response)
+                .setResult(Result.SUCCESS);
+        }
     }
 
     handleFailedResponse({realAgeJsonException, realAgeFactValidationException}) {
