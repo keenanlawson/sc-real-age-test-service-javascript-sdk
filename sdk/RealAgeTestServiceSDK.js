@@ -2,6 +2,7 @@
 import RealAgeAuthentication from './authentication/RealAgeAuthentication';
 import RequestExecutor from './clients/RequestExecutor';
 import RealAgeServiceClient from './clients/RealAgeServiceClient';
+import { TokenTypes } from './clients/TokenType';
 
 
 /****************************************
@@ -54,6 +55,10 @@ export default class RealAgeTestServiceSDK {
         }
 
         return instance;
+    }
+
+    static getTokenTypes() {
+        return TokenTypes;
     }
 
     static getToken(hostUrl, realAgeAuthentication, { username = '', password = ''}) {

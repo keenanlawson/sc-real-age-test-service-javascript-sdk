@@ -1,4 +1,4 @@
-const RealAgeTestServiceSDK = require('./build/RealAgeTestServiceSDK').default;
+const RealAgeTestServiceSDK = require('./dist/RealAgeTestServiceSDK').default;
 
 const _SDK = new RealAgeTestServiceSDK({
     protocol: 'https',
