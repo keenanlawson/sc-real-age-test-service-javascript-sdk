@@ -1,7 +1,7 @@
 'use strict';
-import RealAgeAuthentication from './authentication/RealAgeAuthentication';
+import ServiceAuthentication from './authentication/ServiceAuthentication';
 import RequestExecutor from './clients/RequestExecutor';
-import RealAgeServiceClient from './clients/RealAgeServiceClient';
+import ServiceClient from './clients/ServiceClient';
 import { TokenTypes } from './clients/TokenType';
 
 
@@ -11,7 +11,7 @@ import { TokenTypes } from './clients/TokenType';
 let instance = null;
 
 const requestExecutor = new RequestExecutor();
-const realAgeServiceClient = new RealAgeServiceClient();
+const serviceClient = new ServiceClient();
 
 /**
  * Set up private data storage
@@ -53,7 +53,7 @@ export default class RealAgeTestServiceSDK {
             _baseUrl.set(this, `${protocol}://${host}${port ? ':' + port : ''}${pathname}`);
 
             requestExecutor.debug(logger || (()=>{}));
-            realAgeServiceClient.debug(logger || (()=>{}));
+            serviceClient.debug(logger || (()=>{}));
 
             instance = this;
         }
@@ -68,7 +68,7 @@ export default class RealAgeTestServiceSDK {
     static getToken(hostUrl, realAgeAuthentication, { username = '', password = ''}) {
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
+                serviceClient.getToken(hostUrl, realAgeAuthentication, { username, password }),
                 resolve,
                 reject
             );
@@ -84,7 +84,7 @@ export default class RealAgeTestServiceSDK {
                     } else if (!token) {
                         reject2(new Error('Invalid token: ' + token));
                     } else {
-                        resolve2(new RealAgeAuthentication({ tokenType, token, userId }));
+                        resolve2(new ServiceAuthentication({ tokenType, token, userId }));
                     }
                 }),
                 resolve,
@@ -97,7 +97,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getAllAssessments(hostUrl, realAgeAuthentication, userId),
+                serviceClient.getAllAssessments(hostUrl, realAgeAuthentication, userId),
                 resolve,
                 reject
             );
@@ -108,7 +108,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getUserDetails(hostUrl, realAgeAuthentication, userId),
+                serviceClient.getUserDetails(hostUrl, realAgeAuthentication, userId),
                 resolve,
                 reject
             );
@@ -119,7 +119,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getUserAssessments(hostUrl, realAgeAuthentication, userId),
+                serviceClient.getUserAssessments(hostUrl, realAgeAuthentication, userId),
                 resolve,
                 reject
             );
@@ -130,7 +130,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getAssessmentStatusForUser(hostUrl, realAgeAuthentication, userId, assessmentId),
+                serviceClient.getAssessmentStatusForUser(hostUrl, realAgeAuthentication, userId, assessmentId),
                 resolve,
                 reject
             );
@@ -141,7 +141,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getFirstPage(hostUrl, realAgeAuthentication, userId, assessmentId),
+                serviceClient.getFirstPage(hostUrl, realAgeAuthentication, userId, assessmentId),
                 resolve,
                 reject
             );
@@ -152,7 +152,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId),
+                serviceClient.getPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId),
                 resolve,
                 reject
             );
@@ -163,7 +163,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.postPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO),
+                serviceClient.postPage(hostUrl, realAgeAuthentication, userId, assessmentId, moduleId, questionGroupId, questionGroupAnswersDTO),
                 resolve,
                 reject
             );
@@ -174,7 +174,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getRecommendations(hostUrl, realAgeAuthentication, userId, assessmentId),
+                serviceClient.getRecommendations(hostUrl, realAgeAuthentication, userId, assessmentId),
                 resolve,
                 reject
             );
@@ -185,7 +185,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getCalculation(hostUrl, realAgeAuthentication, userId, assessmentId),
+                serviceClient.getCalculation(hostUrl, realAgeAuthentication, userId, assessmentId),
                 resolve,
                 reject
             );
@@ -196,7 +196,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getMicroBenefits(hostUrl, realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist),
+                serviceClient.getMicroBenefits(hostUrl, realAgeAuthentication, userId, assessmentId, microPaymentDTOs, persist),
                 resolve,
                 reject
             );
@@ -207,7 +207,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.getPotentialBenefitForUser(hostUrl, realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs),
+                serviceClient.getPotentialBenefitForUser(hostUrl, realAgeAuthentication, userId, assessmentId, maximizedFactDataDTOs),
                 resolve,
                 reject
             );
@@ -218,7 +218,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRequest(
-                realAgeServiceClient.requestSessionProfile(hostUrl),
+                serviceClient.requestSessionProfile(hostUrl),
                 resolve,
                 reject
             );
@@ -229,7 +229,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.getRecommendedDVGContent(hostUrl, realAgeAuthentication, optAssessmentId),
+                serviceClient.getRecommendedDVGContent(hostUrl, realAgeAuthentication, optAssessmentId),
                 resolve,
                 reject
             );
@@ -240,7 +240,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.getAllFactsForUser(hostUrl, realAgeAuthentication, userId),
+                serviceClient.getAllFactsForUser(hostUrl, realAgeAuthentication, userId),
                 resolve,
                 reject
             );
@@ -251,7 +251,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.getFactForUser(hostUrl, realAgeAuthentication, userId, factId),
+                serviceClient.getFactForUser(hostUrl, realAgeAuthentication, userId, factId),
                 resolve,
                 reject
             );
@@ -262,7 +262,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.getFactsForUser(hostUrl, realAgeAuthentication, userId, factIdSet),
+                serviceClient.getFactsForUser(hostUrl, realAgeAuthentication, userId, factIdSet),
                 resolve,
                 reject
             );
@@ -273,7 +273,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.setFactsForUser(hostUrl, realAgeAuthentication, userId, factDataDTOSet),
+                serviceClient.setFactsForUser(hostUrl, realAgeAuthentication, userId, factDataDTOSet),
                 resolve,
                 reject
             );
@@ -284,7 +284,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeRawRequest(
-                realAgeServiceClient.getRealAgeStatusResult(hostUrl, realAgeAuthentication, userId),
+                serviceClient.getRealAgeStatusResult(hostUrl, realAgeAuthentication, userId),
                 resolve,
                 reject
             );
@@ -295,7 +295,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeNoResponseRequest(
-                realAgeServiceClient.subscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
+                serviceClient.subscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
                 resolve,
                 reject
             );
@@ -306,7 +306,7 @@ export default class RealAgeTestServiceSDK {
         const hostUrl = _baseUrl.get(this);
         return new Promise((resolve, reject) => {
             requestExecutor.executeNoResponseRequest(
-                realAgeServiceClient.unsubscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
+                serviceClient.unsubscribeToEmailMarketing(hostUrl, realAgeAuthentication, email),
                 resolve,
                 reject
             );

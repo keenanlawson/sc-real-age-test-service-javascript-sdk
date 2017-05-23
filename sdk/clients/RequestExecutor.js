@@ -39,13 +39,13 @@ export default class RequestExecutor {
                 } else {
                     responseDTO = this.handleGenericFailedResponse(err);
                 }
-                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', err);
+                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
                 reject(responseDTO);
             });
         } catch (err) {
             _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
             responseDTO = this.handleGenericFailedResponse(err);
-            _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', err);
+            _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
             reject(responseDTO);
         }
     }
@@ -67,33 +67,34 @@ export default class RequestExecutor {
                 } else {
                     responseDTO = this.handleGenericFailedResponse(err);
                 }
-                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', err);
-                reject(responseDTO);
-            });
-        } catch (err) {
-            _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
-            responseDTO = this.handleGenericFailedResponse(err);
-            _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', err);
-            reject(responseDTO);
-        }
-    }
-
-    executeNoResponseRequest(promise, resolve, reject) {
-        try {
-            promise.then((response) => {
-                _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Response -> ', response);
-                let responseDTO = this.handleSuccessfulResponse(response);
-                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Response -> ', responseDTO);
-                resolve(responseDTO);
-            }).catch((err) => {
-                _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
-                let responseDTO = this.handleGenericFailedResponse(err);
                 _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
                 reject(responseDTO);
             });
         } catch (err) {
             _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
-            let responseDTO = this.handleGenericFailedResponse(err);
+            responseDTO = this.handleGenericFailedResponse(err);
+            _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
+            reject(responseDTO);
+        }
+    }
+
+    executeNoResponseRequest(promise, resolve, reject) {
+        let responseDTO = {};
+        try {
+            promise.then((response) => {
+                _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Response -> ', response);
+                responseDTO = this.handleSuccessfulResponse(response);
+                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Response -> ', responseDTO);
+                resolve(responseDTO);
+            }).catch((err) => {
+                _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
+                responseDTO = this.handleGenericFailedResponse(err);
+                _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
+                reject(responseDTO);
+            });
+        } catch (err) {
+            _logger.get(this)('RealAgeTestServiceSDK Logger: Raw Error -> ', err);
+            responseDTO = this.handleGenericFailedResponse(err);
             _logger.get(this)('RealAgeTestServiceSDK Logger: DTO Error -> ', responseDTO);
             reject(responseDTO);
         }
