@@ -34,3 +34,9 @@
 
 - Updated SDK to return promises.
 - Fixed raw request response DTO.
+
+-----
+
+5/23/2017
+
+- Added debugging ability through passing in a custom logger function

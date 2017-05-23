@@ -30,17 +30,18 @@ let _baseUrl = new WeakMap();
 export default class RealAgeTestServiceSDK {
 
     /**
-     *
-     * @param protocol
-     * @param host
-     * @param port
-     * @param pathname
-     * @returns {RealAgeTestServiceSDK}
+     * Create an instance of the SDK
+     * @param {String} protocol
+     * @param {String} host
+     * @param {String} port
+     * @param {String} pathname
+     * @param {Function} logger
+     * @returns {RealAgeTestServiceSDK|Error}
      */
-    constructor({ protocol = 'https', host = '', port = '', pathname = '/rat' } = {}) {
+    constructor({ protocol = 'https', host = '', port = '', pathname = '/rat', logger = null } = {}) {
 
         if (!host) {
-            return null;
+            throw new Error('RealAgeTestServiceSDK ERROR: Required host not specified.');
         }
 
         if (!instance) {
@@ -50,6 +51,9 @@ export default class RealAgeTestServiceSDK {
             _host.set(this, host);
             _pathname.set(this, pathname);
             _baseUrl.set(this, `${protocol}://${host}${port ? ':' + port : ''}${pathname}`);
+
+            requestExecutor.debug(logger || (()=>{}));
+            realAgeServiceClient.debug(logger || (()=>{}));
 
             instance = this;
         }
