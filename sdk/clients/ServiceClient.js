@@ -11,6 +11,7 @@ export default class RealAgeServiceClient {
     
     debug(logger) {
         _logger.set(this, logger);
+        this.requestBuilder.debug(_logger.get(this));
     }
 
     sanitizeTokenTypeAndToken(realAgeAuthentication, userId) {

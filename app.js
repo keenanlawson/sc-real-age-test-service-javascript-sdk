@@ -7,18 +7,12 @@ const _SDK = new RealAgeTestServiceSDK({
     pathname: '/rat'
 });
 
-// const _TOKEN_AUTH = RealAgeTestServiceSDK.getAuthentication({
-//     tokenType: 'BASIC',
-//     token: 'c2hhcmVjYXJlOmhzd2k='
-// });
-// const _TOKEN_BODY = {username: 'klawson@sharecare.com', password: 'sharecare'};
-
 const getTestAuth = () => {
     return new Promise((resolve, reject) => {
         RealAgeTestServiceSDK.getAuthentication({tokenType: 'BASIC', token: 'c2hhcmVjYXJlOmhzd2k='})
             .then((response) => {
                 console.log('getAuthentication SUCCESS: ', response);
-                resolve({auth: response.data, body: {username: 'klawson@sharecare.com', password: 'sharecare'}})
+                resolve({auth: response.data, body: {username: 'klawson3@sharecare.com', password: 'sharecare'}})
             })
             .catch((err) => {
                 console.log('getAuthentication ERROR: ', err);
